@@ -8,6 +8,10 @@ Perhaps this will help you remember what you were working on?
 
 ## Usage
 
+Requires:
+- Clojure 1.11.1 or newer
+- Babashka 1.3.188
+
 ```bash
 $ bb -m voxmachina.habitat --src /home/your-home-dir/src
 ```
