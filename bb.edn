@@ -1,2 +1,3 @@
-{:paths ["src"]
- :deps {org.babashka/http-server {:mvn/version "0.1.12"}}}
+{:paths ["src" "."]
+ :deps {io.github.babashka/tools.bbuild {:git/sha "a1f16c7376b460200ad38b4ef615ba492198ee63"}
+        org.babashka/http-server {:mvn/version "0.1.12"}}}
