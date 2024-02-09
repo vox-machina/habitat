@@ -19,7 +19,7 @@
 
 ;; REVIEW: will need to set up more exclusions to avoid logging trivia
 (defn event-valid? [{:keys [path] :as event}]
-  (if (or (ends-with? path ".lock") (ends-with? path ".log") (includes? path "#")) false true))
+  (if (or (ends-with? path ".lock") (ends-with? path ".log") (includes? path "#") (includes? path "/.git")) false true))
 
 (defn -main [& args]
   (let [cfg (cli/parse-opts *command-line-args* {:spec cli-options})
