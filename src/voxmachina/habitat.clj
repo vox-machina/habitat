@@ -42,14 +42,16 @@
     [:get "/queue"] {:body {:queue (seq @q) :queue-size (count @q)} :status 200 :headers {"Content-Type" "application/edn"}}))
 
 (defn -main [& args]
-  (let [cfg (cli/parse-opts *command-line-args* {:spec cli-options})
+  (let [args (cli/parse-opts *command-line-args* {:spec cli-options})
         v (:habitat (read-string (slurp "version.edn")))]
     (info {:main/start {:data (str "starting habitat v" v) :metadata {:habitat/version v}}})
-    (info {:filesystem/watch {:data (:src cfg) :metadata {:habitat/version v}}})
-    (fw/watch (:src cfg) (fn [{:keys [path] :as event}]
-                           (when (event-valid? event)
-                             (let [inf {:filesystem/event {:data event :metadata {:habitat/version v}}}]
-                               (info inf)
-                               (reset! q (queue q-cnt @q inf))))) {:recursive true})
+    (info {:filesystem/watch {:data (:src args) :metadata {:habitat/version v}}})
+    (info {:main/start {:data (str "port : " (:port cfg))}})
+    (info {:main/start {:data (str "local event queue size : " (:queue-size cfg))}})
+    (fw/watch (:src args) (fn [{:keys [path] :as event}]
+                            (when (event-valid? event)
+                              (let [inf {:filesystem/event {:data event :metadata {:habitat/version v}}}]
+                                (info inf)
+                                (reset! q (queue q-cnt @q inf))))) {:recursive true})
     (srv/run-server app {:port (or (:port cfg) 8080)})
     @(promise)))
