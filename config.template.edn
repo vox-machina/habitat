@@ -1,1 +1,4 @@
-{:queue-size 5}
+{
+ :port 8080
+ :queue-size 5
+}

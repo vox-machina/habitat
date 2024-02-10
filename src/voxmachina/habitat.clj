@@ -42,21 +42,6 @@
     [:get "/queue"] {:body {:queue (seq @q) :queue-size (count @q)} :status 200 :headers {"Content-Type" "application/edn"}}))
 
   (defn -main [& args]
-    ;(println "q : " @q)
-    ;(println "q size : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 1 : " (reset! q (queue q-cnt @q "an item 1")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 2 : " (reset! q (queue q-cnt @q "an item 2")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 3 : " (reset! q (queue q-cnt @q "an item 3")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 4 : " (reset! q (queue q-cnt @q "an item 4")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 4 : " (reset! q (queue q-cnt @q "an item 5")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 5 : " (reset! q (queue q-cnt @q "an item 5")))
-    ;(println "q size is now : " (count @q) ", peek : " (peek @q))
-    ;(println "q plus an item 6 : " (reset! q (queue q-cnt @q "an item 6")))
     (let [cfg (cli/parse-opts *command-line-args* {:spec cli-options})
           v (:habitat (read-string (slurp "version.edn")))]
       (info {:main/start {:data (str "starting habitat v" v) :metadata {:habitat/version v}}})
@@ -66,5 +51,5 @@
                                (let [inf {:filesystem/event {:data event :metadata {:habitat/version v}}}]
                                  (info inf)
                                  (reset! q (queue q-cnt @q inf))))) {:recursive true})
-      (srv/run-server app {:port 8080})
+      (srv/run-server app {:port (or (:port cfg) 8080)})
       @(promise)))
