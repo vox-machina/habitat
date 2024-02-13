@@ -22,7 +22,7 @@
 (merge-config! {:appenders {:spit (spit-appender {:fname "logs/habitat.log"})}})
 
 (defn event-valid? [{:keys [path] :as event}]
-  (if (or (ends-with? path ".lock") (ends-with? path ".log") (some #{path} #{"#" "/.git" "target/classes"}) (not (includes? path "src/"))) false true))
+  (if (or (ends-with? path ".lock") (ends-with? path ".log") (some #(includes? path %) #{"#" "/.git" "target/classes"}) (not (includes? path "src/"))) false true))
 
 (defn queue
   ([] (clojure.lang.PersistentQueue/EMPTY))
